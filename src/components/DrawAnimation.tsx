@@ -1,12 +1,13 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Gift, Sparkles } from "lucide-react";
 import { useAppStore } from "@/store/useAppStore";
 import { useNavigate } from "react-router-dom";
 
 export default function DrawAnimation() {
-  const { isDrawing, participants } = useAppStore();
+  const { isDrawing, participants, drawResult } = useAppStore();
   const navigate = useNavigate();
   const [displayIndex, setDisplayIndex] = useState(0);
+  const wasDrawing = useRef(false);
 
   useEffect(() => {
     if (!isDrawing || participants.length === 0) return;
@@ -21,13 +22,14 @@ export default function DrawAnimation() {
   }, [isDrawing, participants.length]);
 
   useEffect(() => {
-    if (!isDrawing) {
+    if (wasDrawing.current && !isDrawing && drawResult) {
       const timer = setTimeout(() => {
         navigate("/result");
       }, 300);
       return () => clearTimeout(timer);
     }
-  }, [isDrawing, navigate]);
+    wasDrawing.current = isDrawing;
+  }, [isDrawing, drawResult, navigate]);
 
   if (!isDrawing) return null;
 
