@@ -7,22 +7,16 @@ export default function DrawAnimation() {
   const { isDrawing, participants } = useAppStore();
   const navigate = useNavigate();
   const [displayIndex, setDisplayIndex] = useState(0);
-  const [shakeGift, setShakeGift] = useState(false);
 
   useEffect(() => {
-    if (!isDrawing) return;
+    if (!isDrawing || participants.length === 0) return;
 
     const interval = setInterval(() => {
       setDisplayIndex((prev) => (prev + 1) % participants.length);
     }, 100);
 
-    const shakeInterval = setInterval(() => {
-      setShakeGift((prev) => !prev);
-    }, 200);
-
     return () => {
       clearInterval(interval);
-      clearInterval(shakeInterval);
     };
   }, [isDrawing, participants.length]);
 
@@ -40,13 +34,13 @@ export default function DrawAnimation() {
   return (
     <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center">
       <div className="text-center animate-pop-in">
-        <div className={`mb-8 ${shakeGift ? "animate-shake" : ""}`}>
-          <div className="relative inline-block">
+        <div className="mb-8">
+          <div className="relative inline-block animate-pulse-soft">
             <Gift className="w-32 h-32 text-christmas-gold mx-auto" />
-            <Sparkles className="w-8 h-8 text-yellow-300 absolute -top-2 -right-2 animate-pulse" />
+            <Sparkles className="w-8 h-8 text-yellow-300 absolute -top-2 -right-2" />
             <Sparkles
-              className="w-6 h-6 text-yellow-300 absolute -bottom-1 -left-2 animate-pulse"
-              style={{ animationDelay: "0.3s" }}
+              className="w-6 h-6 text-yellow-300 absolute -bottom-1 -left-2"
+              style={{ opacity: 0.7 }}
             />
           </div>
         </div>

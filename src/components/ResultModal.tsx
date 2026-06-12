@@ -112,8 +112,8 @@ export default function ResultModal() {
           <div className="text-center">
             <div className="inline-block mb-4">
               <div className="relative">
-                <Gift className="w-16 h-16 text-christmas-gold mx-auto animate-bounce-gentle" />
-                <Sparkles className="w-5 h-5 text-yellow-300 absolute -top-1 -right-1 animate-pulse" />
+                <Gift className="w-16 h-16 text-christmas-gold mx-auto animate-float" />
+                <Sparkles className="w-5 h-5 text-yellow-300 absolute -top-1 -right-1 animate-pulse-soft" />
               </div>
             </div>
 

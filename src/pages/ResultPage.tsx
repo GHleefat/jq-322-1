@@ -28,6 +28,7 @@ export default function ResultPage() {
   };
 
   const handleRedraw = () => {
+    resetDraw();
     navigate("/");
   };
 

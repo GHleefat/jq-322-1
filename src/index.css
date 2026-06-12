@@ -11,12 +11,56 @@
   --christmas-snow: #fffaf0;
 }
 
+@keyframes snowfall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0.2;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-soft {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes popIn {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
 body {
   font-family: "Noto Serif SC", serif;
   background: linear-gradient(135deg, #0b6623 0%, #064e17 50%, #0b6623 100%);
+  background-attachment: fixed;
   min-height: 100vh;
   margin: 0;
   color: #fffaf0;
+  -webkit-font-smoothing: antialiased;
 }
 
 * {
@@ -67,34 +111,29 @@ body {
   border-color: #d4af37;
 }
 
-.bg-christmas-red {
-  background-color: #c41e3a;
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
 
-.bg-christmas-green {
-  background-color: #0b6623;
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
 }
 
-.bg-christmas-gold {
-  background-color: #d4af37;
+.animate-pop-in {
+  animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.bg-christmas-snow {
-  background-color: #fffaf0;
+.glow-button {
+  box-shadow:
+    0 0 15px rgba(212, 175, 55, 0.4),
+    0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
-.snowflake {
-  position: fixed;
-  color: rgba(255, 250, 240, 0.8);
-  pointer-events: none;
-  z-index: 0;
-  user-select: none;
-}
-
-.confetti {
-  position: fixed;
-  pointer-events: none;
-  z-index: 100;
+.glow-button:hover {
+  box-shadow:
+    0 0 25px rgba(240, 208, 96, 0.6),
+    0 6px 20px rgba(0, 0, 0, 0.4);
 }
 
 input,

@@ -31,14 +31,16 @@ export default function SetupPage() {
   const [error, setError] = useState("");
 
   const handleAddParticipant = () => {
-    if (newName.trim()) {
-      addParticipant(newName);
+    const trimmed = newName.trim();
+    if (trimmed) {
+      addParticipant(trimmed);
       setNewName("");
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
+      e.preventDefault();
       handleAddParticipant();
     }
   };
@@ -74,7 +76,7 @@ export default function SetupPage() {
           <div className="inline-block mb-4">
             <div className="relative">
               <Gift className="w-16 h-16 text-christmas-gold mx-auto animate-float" />
-              <Sparkles className="w-6 h-6 text-yellow-300 absolute -top-1 -right-2 animate-pulse" />
+              <Sparkles className="w-6 h-6 text-yellow-300 absolute -top-1 -right-2 animate-pulse-soft" />
             </div>
           </div>
           <h1 className="text-5xl font-display text-christmas-gold mb-3 drop-shadow-lg">
@@ -101,7 +103,7 @@ export default function SetupPage() {
               type="text"
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
-              onKeyPress={handleKeyPress}
+              onKeyDown={handleKeyDown}
               placeholder="输入姓名，按回车添加"
               className="flex-1 px-4 py-3 rounded-xl bg-christmas-snow/90 text-gray-800 border-2 border-christmas-gold/30 focus:border-christmas-gold focus:outline-none transition-colors placeholder:text-gray-400"
             />
@@ -126,7 +128,8 @@ export default function SetupPage() {
                 </span>
                 <button
                   onClick={() => removeParticipant(p.id)}
-                  className="ml-2 text-christmas-snow/50 hover:text-christmas-gold transition-colors opacity-0 group-hover:opacity-100"
+                  className="ml-2 text-christmas-snow/50 hover:text-christmas-gold transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                  aria-label="删除"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -153,11 +156,14 @@ export default function SetupPage() {
             设置不能互抽的配对（如夫妻、同部门同事等）
           </p>
 
-          <div className="flex items-center gap-3 mb-5">
+          <div className="flex flex-wrap items-center gap-3 mb-5">
             <select
               value={selected1}
-              onChange={(e) => setSelected1(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-xl bg-christmas-snow/90 text-gray-800 border-2 border-christmas-gold/30 focus:border-christmas-gold focus:outline-none transition-colors"
+              onChange={(e) => {
+                setSelected1(e.target.value);
+                if (e.target.value === selected2) setSelected2("");
+              }}
+              className="flex-1 min-w-[140px] px-4 py-3 rounded-xl bg-christmas-snow/90 text-gray-800 border-2 border-christmas-gold/30 focus:border-christmas-gold focus:outline-none transition-colors"
             >
               <option value="">选择第一人</option>
               {participants.map((p) => (
@@ -167,12 +173,14 @@ export default function SetupPage() {
               ))}
             </select>
 
-            <span className="text-christmas-gold font-bold text-xl">↔</span>
+            <span className="text-christmas-gold font-bold text-xl px-2">
+              ↔
+            </span>
 
             <select
               value={selected2}
               onChange={(e) => setSelected2(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-xl bg-christmas-snow/90 text-gray-800 border-2 border-christmas-gold/30 focus:border-christmas-gold focus:outline-none transition-colors"
+              className="flex-1 min-w-[140px] px-4 py-3 rounded-xl bg-christmas-snow/90 text-gray-800 border-2 border-christmas-gold/30 focus:border-christmas-gold focus:outline-none transition-colors"
             >
               <option value="">选择第二人</option>
               {participants
@@ -190,6 +198,7 @@ export default function SetupPage() {
               className="px-4 py-3 bg-christmas-red hover:bg-christmas-red-dark text-christmas-snow rounded-xl font-semibold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2 border border-christmas-gold/30"
             >
               <Plus className="w-5 h-5" />
+              <span className="sm:hidden">添加</span>
             </button>
           </div>
 
@@ -206,7 +215,8 @@ export default function SetupPage() {
                 </span>
                 <button
                   onClick={() => removeExclusionRule(rule.id)}
-                  className="text-christmas-snow/50 hover:text-christmas-gold transition-colors opacity-0 group-hover:opacity-100"
+                  className="text-christmas-snow/50 hover:text-christmas-gold transition-colors opacity-0 group-hover:opacity-100 shrink-0"
+                  aria-label="删除规则"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -232,7 +242,7 @@ export default function SetupPage() {
           <button
             onClick={handleStartDraw}
             disabled={participants.length < 2 || isDrawing}
-            className="relative px-12 py-5 gold-gradient text-christmas-red-dark rounded-full text-xl font-bold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg hover:shadow-xl animate-glow inline-flex items-center gap-3"
+            className="relative px-12 py-5 gold-gradient text-christmas-red-dark rounded-full text-xl font-bold transition-all hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 glow-button inline-flex items-center gap-3"
           >
             <Gift className="w-7 h-7" />
             开始抽签

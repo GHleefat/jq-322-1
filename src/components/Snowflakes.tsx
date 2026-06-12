@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
 interface Snowflake {
   id: number;
@@ -11,49 +11,30 @@ interface Snowflake {
 
 export default function Snowflakes() {
   const snowflakes = useMemo<Snowflake[]>(() => {
-    const count = 50;
+    const count = 30;
     return Array.from({ length: count }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
-      size: Math.random() * 12 + 8,
-      duration: Math.random() * 10 + 10,
-      delay: Math.random() * 10,
-      opacity: Math.random() * 0.5 + 0.3,
+      size: Math.random() * 10 + 6,
+      duration: Math.random() * 15 + 15,
+      delay: Math.random() * 15,
+      opacity: Math.random() * 0.4 + 0.2,
     }));
   }, []);
 
-  useEffect(() => {
-    const style = document.createElement("style");
-    style.textContent = `
-      @keyframes snowfall {
-        0% {
-          transform: translateY(-10vh) rotate(0deg);
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(110vh) rotate(360deg);
-          opacity: 0.3;
-        }
-      }
-    `;
-    document.head.appendChild(style);
-    return () => {
-      document.head.removeChild(style);
-    };
-  }, []);
-
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0 will-change-transform">
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className="snowflake"
+          className="absolute text-christmas-snow select-none"
           style={{
             left: `${flake.left}%`,
+            top: "-5vh",
             fontSize: `${flake.size}px`,
-            animation: `snowfall ${flake.duration}s linear infinite`,
-            animationDelay: `${flake.delay}s`,
             opacity: flake.opacity,
+            animation: `snowfall ${flake.duration}s linear ${flake.delay}s infinite`,
+            willChange: "transform, opacity",
           }}
         >
           ❄
